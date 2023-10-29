@@ -1,0 +1,1 @@
+           Algoritmo             |  Numero de Bits   |   Tempo para gerar   |    Numero primo gerado

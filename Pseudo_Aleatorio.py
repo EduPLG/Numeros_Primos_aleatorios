@@ -5,10 +5,10 @@ def Blum_Blum_Shub(num_bits):
     """
     Referência: https://www.gkbrk.com/wiki/blum-blum-shub/
     """
-    P = random.randint(23, 1237893)
-    Q = random.randint(29, 1238277)
-    M = P * Q
-    seed = random.randint(127, 128399)
+    M = 0
+    while not (M%2):
+        M = random.randint(29, 1238277)
+    seed = random.randint(13, M-1)
     bit = ""
     for i in range(num_bits):
         seed = (seed * seed) % M # somatório (x² mod M) num_bits vezes 
@@ -20,34 +20,36 @@ def linear_congruential_generator(n_bits):
     """
     Referência: https://github.com/rossilor95/lcg-python/blob/main/lcg.py
     """
-    x = random.randint(3084, 608435)
-    m = 0
-    while not (m%2): # enquanto m for par
-        m = random.randint(13, x)
-    a, c = random.randint(13,x), random.randint(13,x)
+    m = random.randint(3084, 9999999)
+    if m%2 == 0: m+=1 # para m não ser par
+    x = random.randint(13, m-100)
+    a, c = random.randint(13,m-100), random.randint(13,m-100)
     bits = ""
     for i in range(n_bits):
-        x = (a * x + c) % m
+        x = (a * x + c) % m # 
         bits += str(x & 1)
     return bits
 
 
-# Blum_Blum_shub| linear_congruential_generator
-# tempo tempo
-tabela = [[],[]]
 lista_bits = [40, 56, 80, 128, 168, 224, 256, 512, 1024, 2048, 4096]
 
-for bits in lista_bits:
-    for j in range(2):
-        media = 0
-        for i in range(10):
-            val = time.time()
-            [Blum_Blum_Shub(bits), linear_congruential_generator(bits)][j]
-            media += time.time()-val
-        tabela[j].append(media/10)
+if __name__ == '__main__':
+    tabela = [[],[]]
+    # Cria um número pseudo aleatório e guarda o tempo na lista tabela 0 para BlumBlumShub e 
+    # 1 para linear_congruential_generator
+    for bits in lista_bits: # número de bits do número
+        for j in range(2): # Para testar os dois geradores
+            media = 0
+            for i in range(10): # 10 tentativas para cada gerador
+                val = time.time()
+                [Blum_Blum_Shub(bits), linear_congruential_generator(bits)][j]
+                media += time.time()-val
+            tabela[j].append(media/10)
 
 
-print("  Bits   |   Blum_Blum_Shub    |  linear_congruential_generator")
-for bits,i,j in zip(lista_bits, tabela[0], tabela[1]):
-    print("--"*30)
-    print(" ", bits, "    |  ", "   {:.8f} ms  ".format(i*1000), " | ", "   {:.8f} ms".format(j*1000))
+    print("  Bits     |   Blum_Blum_Shub    |  linear_congruential_generator")
+    for bits,i,j in zip(lista_bits, tabela[0], tabela[1]):
+        print("--"*30)
+        print(" ", bits, " "*(5-len(str(bits)))," |  ", "   {:.8f} ms  ".format(i*1000000), " | ", "   {:.8f} ms".format(j*1000000))
+
+    print()
