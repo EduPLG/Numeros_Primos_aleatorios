@@ -6,7 +6,6 @@ def Blum_Blum_Shub(num_bits):
     Referência: https://www.gkbrk.com/wiki/blum-blum-shub/
     """
     M = random.randint(29, 9999999)
-    if M%2==0: M+=1
     seed = random.randint(13, M-1)
     bit = ""
     for i in range(num_bits):
@@ -20,7 +19,6 @@ def linear_congruential_generator(n_bits):
     Referência: https://github.com/rossilor95/lcg-python/blob/main/lcg.py
     """
     m = random.randint(3084, 9999999)
-    if m%2 == 0: m+=1 # para m não ser par
     x = random.randint(13, m-100)
     a, c = random.randint(13,m-100), random.randint(13,m-100)
     bits = ""
