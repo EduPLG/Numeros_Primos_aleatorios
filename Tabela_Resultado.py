@@ -23,7 +23,7 @@ def Processo(lock, bits, j, h): # Divide o processamento (cada processo testa co
     tempo = time()
     while not teste: # Enquanto não aceitar como primo
         primo = int([Blum_Blum_Shub(bits)[:-1]+"1", linear_congruential_generator(bits)[:-1]+"1"][j],2) # pega um número
-        teste = [is_prime_MR(primo,5), Fermat(primo,2)][h] # Testa se é primo
+        teste = [is_prime_MR(primo,10), Fermat(primo,10)][h] # Testa se é primo
     tempo = (time()-tempo)*1000000
     with lock: # Para dois processos não tentarem escrever ao mesmo tempo
         Escreve(["Miller-Rabin","Fermat"][h], bits, tempo, primo)

@@ -28,7 +28,7 @@ def is_prime_MR (n: int, t: int) -> bool:
         r = r // 2
     for i in range(t):
         a = randint(2, n - 2) # a aleatório maior que 1 e menor que n-1
-        y = pow (a, r, n)               # a**r % n
+        y = pow(a, r, n)               # a**r % n
         if (y != 1) and (y != n - 1): # verifica se o resultado é diferente de 1 e (-1 mod n) -> (n-1)
             """
             Caso seja diferente, é preciso verificar se o quadrado desse valor mod n não é 1 ou n-1
@@ -50,43 +50,45 @@ def is_prime_MR (n: int, t: int) -> bool:
     return True
 
 
-def MDC(a,b):
+def mdc(a,b):
     i = 0
-    while b != 0 and i < 100:
+    r = b % a
+    while r != 0 and i < 100:
         i += 1
-        resto = a % b
-        a = b
-        b = resto
+        b = a
+        a = r
+        r = b % a
     return a
 
 
 def Fermat(n, k):
     """
-    Referência: https://www.youtube.com/watch?v=q53TAGBuFAw
+    Referência: https://gist.github.com/Ayrx/5884802
     """
-    if n == 1: return False # caso o número pseudoaleatório gerado == 0
-    if n%2 == 0:
-        return False
-    elif n == 3: # para que o randint de a tenha possíveis escolhas
+    if n == 1: return False # Caso o número pseudoaleatório gerado == 0
+    if n == 2:
         return True
-    for _ in range(k):
-        a = randint(2, n-1)
-        if MDC(n,a) != 1: # Caso n tenha um MDC com a que não seja 1 (num composto)
+
+    if n % 2 == 0:
+        return False
+
+    for i in range(k):
+        a = randint(1, n-1)
+        if mdc(a,n) != 1:
             return False
-        elif pow(a,(n-1),n) != 1: # Caso a**(n-1) mod n não seja 1 (num composto)
+        if pow(a, n-1,n) != 1:
             return False
     return True
 
 
 if __name__ == "__main__":
-    for nbits in [40,56, 80, 128]:
-        Mr = False
-        Fr = False
+    for nbits in [40,56, 80, 128, 168, 224, 256, 512]:
+        Mr = Fr = False
         while not Mr and not Fr:
             primo = int(linear_congruential_generator(nbits)[:-1]+"1",2) # Retorna num binário com o ultimo bit sempre 1
-            Mr = is_prime_MR(primo,5) # Retorna True/False
-            #print(f"Miller-Rabin: {primo} ", Mr)
-            Fr = Fermat(primo,2) # Retorna True/False
-            #print(f"Fermat: {primo} ", Fr)
-        print(f"O número {primo} é primo para Miller-Rabin: {Mr}!")
-        print(f"O número {primo} é primo para Fermat: {Fr}!")
+            Mr = is_prime_MR(primo,99) # Retorna True/False
+            Fr = Fermat(primo,99) # Retorna True/False
+        print("Bits: ", nbits)
+        print(f"O número {primo} é primo \npara Miller-Rabin: {Mr}!")
+        print(f"para Fermat:...... {Fr}!")
+        print()
