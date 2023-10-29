@@ -5,15 +5,14 @@ def Blum_Blum_Shub(num_bits):
     """
     Referência: https://www.gkbrk.com/wiki/blum-blum-shub/
     """
-    M = 0
-    while not (M%2):
-        M = random.randint(29, 1238277)
+    M = random.randint(29, 9999999)
+    if M%2==0: M+=1
     seed = random.randint(13, M-1)
     bit = ""
     for i in range(num_bits):
         seed = (seed * seed) % M # somatório (x² mod M) num_bits vezes 
         bit += str(seed & 1) # 1 se for ímpar; 0 se for par
-    return bit
+    return bit[:-1]+"1" # Sempre retorna ímpar
 
 
 def linear_congruential_generator(n_bits):
@@ -37,6 +36,11 @@ if __name__ == '__main__':
     tabela = [[],[]]
     # Cria um número pseudo aleatório e guarda o tempo na lista tabela 0 para BlumBlumShub e 
     # 1 para linear_congruential_generator
+    val = 1
+    j = 0
+    while val != 0:
+        val = [Blum_Blum_Shub(256), linear_congruential_generator(256)][j]
+    print(["Blum_Blum_Shub","linear_congruential_generator"][j], " tem 0")
     for bits in lista_bits: # número de bits do número
         for j in range(2): # Para testar os dois geradores
             media = 0

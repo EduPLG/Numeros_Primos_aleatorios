@@ -1,6 +1,6 @@
 from Pseudo_Aleatorio import Blum_Blum_Shub, linear_congruential_generator, lista_bits
 from random import randint
-import timeout_decorator
+from time import time
 
 
 def is_prime_MR (n: int, t: int) -> bool:
@@ -17,7 +17,7 @@ def is_prime_MR (n: int, t: int) -> bool:
     :return: False se o número é composto, True se primo ou pseudoprimo
     :rtype: bool
     """
-    if n in [1,2,3]: return True 
+    if n == 1: return False # Número aleatório gerado == 0
     if (n % 2 == 0): return False # Para quando o número for muito pequeno (pode dar erro)
     r = n - 1
     s = 0
@@ -53,30 +53,26 @@ def Fermat(n, k):
     """
     Referência: https://www.youtube.com/watch?v=q53TAGBuFAw
     """
-    if n in [1,2,3]: return True 
+    if n == 1: return False # Número aleatório gerado == 0
     if n%2 == 0:
         return False
     elif n == 3:
         return True
     for _ in range(k):
         a = randint(2, n-1)
-        if MDC(n,a) != 1:
+        if MDC(n,a) != 1 or pow(a,(n-1),n) != 1:
             return False
-
-        if a**(n-1)%n != 1: 
-            return False
-
     return True
 
 
 if __name__ == "__main__":
-    for nbits in [13,20]:
+    for nbits in [256]:#40,56, 80, 128]:
         Mr = False
         Fr = False
         while not Mr and not Fr:
-            primo = int(Blum_Blum_Shub(nbits),2)
-            Mr = is_prime_MR(primo,20)
-            print(f"Miller-Rabin: {primo} ", Mr)
+            primo = int(linear_congruential_generator(nbits),2)
+            #Mr = is_prime_MR(primo,20)
+            #print(f"Miller-Rabin: {primo} ", Mr)
             Fr = Fermat(primo,2)
             print(f"Fermat: {primo} ", Fr)
         print(f"O número {primo} é primo para Miller-Rabin: {Mr}!")
