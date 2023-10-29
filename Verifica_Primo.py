@@ -26,7 +26,7 @@ def is_prime_MR (n: int, t: int) -> bool:
         r = r // 2
     for i in range(t):
         a = randint(2, n - 2)
-        y = pow (a, r, n)
+        y = pow (a, r, n)               # a**r % n
         if (y != 1) and (y != n - 1):
             j = 1
             while (j < s) and (y != n - 1):
@@ -76,6 +76,8 @@ if __name__ == "__main__":
         while not Mr and not Fr:
             primo = int(Blum_Blum_Shub(nbits),2)
             Mr = is_prime_MR(primo,20)
+            print(f"Miller-Rabin: {primo} ", Mr)
             Fr = Fermat(primo,2)
+            print(f"Fermat: {primo} ", Fr)
         print(f"O número {primo} é primo para Miller-Rabin: {Mr}!")
         print(f"O número {primo} é primo para Fermat: {Fr}!")
