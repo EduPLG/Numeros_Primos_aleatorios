@@ -49,7 +49,7 @@ def is_prime_MR (n: int, t: int) -> bool:
                 return False
     return True
 
-
+"""
 def mdc(a,b):
     i = 0
     r = b % a
@@ -59,7 +59,7 @@ def mdc(a,b):
         a = r
         r = b % a
     return a
-
+"""
 
 def Fermat(n, k):
     """
@@ -74,15 +74,15 @@ def Fermat(n, k):
 
     for i in range(k):
         a = randint(1, n-1)
-        if mdc(a,n) != 1:
-            return False
+        #if mdc(a,n) != 1: # Não vale a pena
+        #    return False
         if pow(a, n-1,n) != 1:
             return False
     return True
 
 
 if __name__ == "__main__":
-    for nbits in [40,56, 80, 128, 168, 224, 256, 512]:
+    for nbits in [40, 56, 80, 128, 168, 224, 256, 512]:
         Mr = Fr = False
         while not Mr and not Fr:
             primo = int(linear_congruential_generator(nbits)[:-1]+"1",2) # Retorna num binário com o ultimo bit sempre 1
