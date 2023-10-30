@@ -86,8 +86,8 @@ if __name__ == "__main__":
         Mr = Fr = False
         while not Mr and not Fr:
             primo = int(linear_congruential_generator(nbits)[:-1]+"1",2) # Retorna num binário com o ultimo bit sempre 1
-            Mr = is_prime_MR(primo,99) # Retorna True/False
-            Fr = Fermat(primo,99) # Retorna True/False
+            Mr = is_prime_MR(primo,10) # Retorna True/False
+            Fr = Fermat(primo,10) # Retorna True/False
         print("Bits: ", nbits)
         print(f"O número {primo} é primo \npara Miller-Rabin: {Mr}!")
         print(f"para Fermat:...... {Fr}!")
